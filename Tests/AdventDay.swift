@@ -24,5 +24,15 @@ struct AdventDayTests {
     let challenge = Day01()
     #expect(challenge.part2() == 29379307)
   }
+  
+  @Test func testSecondDaySafeReports() async throws {
+    let challenge = Day02()
+    #expect(challenge.part1() == 321)
+  }
+  
+  @Test func testSecondDaySafeReportsWithDampenFactor() async throws {
+    let challenge = Day02()
+    #expect(challenge.part2() == 386)
+  }
 
 }
