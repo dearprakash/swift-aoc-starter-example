@@ -7,27 +7,29 @@
 import Foundation
 
 struct Day01: AdventDay {
-
   var data: String
-  
+
   init(data: String) {
     self.data = data
   }
-  
+
   private func pairs() -> [(Int, Int)] {
-    return data
+    return
+      data
       .components(separatedBy: .newlines)
       .compactMap { line -> (Int, Int)? in
-        let components = line
+        let components =
+          line
           .components(separatedBy: .whitespaces)
-          .filter{ !$0.isEmpty }
+          .filter { !$0.isEmpty }
         guard components.count == 2 else { return nil }
         guard let first = Int(components[0]),
-              let second = Int(components[1]) else { return nil }
+          let second = Int(components[1])
+        else { return nil }
         return (first, second)
       }
   }
-  
+
   func part1() -> Int {
     var distances: [Int] = []
 
@@ -36,71 +38,72 @@ struct Day01: AdventDay {
     let firstset = parsedData.map { $0.0 }.sorted()
     let secondset = parsedData.map { $0.1 }.sorted()
 
-    var index: Int = 0
-    while (index < firstset.count) {
+    var index = 0
+    while index < firstset.count {
       distances.append(abs(firstset[index] - secondset[index]))
       index += 1
     }
-    
+
     return distances.reduce(0, +)
   }
-  
+
   func part2() -> Int {
     let parsedData = pairs()
-    
+
     let first = parsedData.map { $0.0 }.sorted()
     let second = parsedData.map { $0.1 }.sorted()
-    
+
     let scores = first.map { item in
       let filtered = second.filter { item == $0 }
       print(filtered)
       return item * filtered.count
     }
-    
+
     let totalScore = scores.reduce(0, +)
-    
+
     return totalScore
   }
 
-  
   func refactoredDistances() -> Int {
-        var distances: [Int] = []
+    var distances: [Int] = []
 
-        // Parse the data into tuples of integers
-        let parsedData = data
-            .components(separatedBy: .newlines)
-            .compactMap { line -> (Int, Int)? in
-                let components = line
-                    .components(separatedBy: .whitespaces)
-                    .filter { !$0.isEmpty }
-                guard components.count == 2,
-                      let first = Int(components[0]),
-                      let second = Int(components[1]) else {
-                    return nil
-                }
-                return (first, second)
-            }
-
-        // Separate into two sorted arrays
-        let first = parsedData.map { $0.0 }.sorted()
-        let second = parsedData.map { $0.1 }.sorted()
-
-        // Ensure matching number of entries
-        guard first.count == second.count else {
-            print("Mismatched number of entries")
-            return 0
+    // Parse the data into tuples of integers
+    let parsedData =
+      data
+      .components(separatedBy: .newlines)
+      .compactMap { line -> (Int, Int)? in
+        let components =
+          line
+          .components(separatedBy: .whitespaces)
+          .filter { !$0.isEmpty }
+        guard components.count == 2,
+          let first = Int(components[0]),
+          let second = Int(components[1])
+        else {
+          return nil
         }
+        return (first, second)
+      }
 
-        // Compute distances
-        distances = zip(first, second).map { abs($0 - $1) }
+    // Separate into two sorted arrays
+    let first = parsedData.map { $0.0 }.sorted()
+    let second = parsedData.map { $0.1 }.sorted()
 
-        print("First: \(first)")
-        print("Second: \(second)")
-        print("Distances: \(distances)")
+    // Ensure matching number of entries
+    guard first.count == second.count else {
+      print("Mismatched number of entries")
+      return 0
+    }
 
-        // Calculate total distance
-        let total = distances.reduce(0, +)
-        return total
+    // Compute distances
+    distances = zip(first, second).map { abs($0 - $1) }
+
+    print("First: \(first)")
+    print("Second: \(second)")
+    print("Distances: \(distances)")
+
+    // Calculate total distance
+    let total = distances.reduce(0, +)
+    return total
   }
-  
 }
